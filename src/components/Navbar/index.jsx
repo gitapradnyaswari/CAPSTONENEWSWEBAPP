@@ -20,7 +20,7 @@ function Navbar() {
   ];
 
   return (
-    <nav className="navbar navbar-expand-lg navbar-dark bg-dark py-2 px-3">
+    <nav className="navbar navbar-expand-lg navbar-dark bg-dark py-2">
       <div className="container-fluid">
         <div className="navbar-brand d-flex align-items-center">
           <img
@@ -44,13 +44,13 @@ function Navbar() {
         </button>
 
         <div className="collapse navbar-collapse" id="navbarNav">
-          <ul className="navbar-nav me-auto">
+          <ul className="navbar-nav me-auto mb-2 mb-lg-0 justify-content-center w-100">
             {links.map((link) => (
               <li className="nav-item" key={link.title}>
                 <NavLink
                   to={link.path}
                   className={({ isActive }) =>
-                    `nav-link ${isActive ? "text-warning" : "text-white"} fs-5`
+                    `nav-link ${isActive ? "text-warning" : "text-white"} fs-5 py-2 px-3 rounded`
                   }
                 >
                   {link.title}
@@ -59,19 +59,19 @@ function Navbar() {
             ))}
           </ul>
 
-          <form className="d-flex" onSubmit={(e) => e.preventDefault()}>
+          <form className="d-flex ms-auto" onSubmit={(e) => e.preventDefault()}>
             <input
               type="text"
               value={query}
               onChange={(e) => setQuery(e.target.value)}
-              className="form-control me-2"
+              className="form-control me-2 shadow-sm"
               placeholder="Search..."
               aria-label="Search"
             />
             <button
               type="button"
               onClick={handleSearch}
-              className="btn btn-warning"
+              className="btn btn-warning ms-2 shadow-sm"
             >
               Search
             </button>

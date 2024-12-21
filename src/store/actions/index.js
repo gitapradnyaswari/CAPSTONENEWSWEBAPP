@@ -38,6 +38,7 @@ export function fetchNews(query) {
       dispatch({
         type: NEWS_REDUCER_CASES.INSERT_NEWS,
         news: responseJSON.response.docs,
+        totalHits: responseJSON.response.meta.hits, // Total berita yang ada
       });
     } catch (error) {
       console.error("[fetchNews Error]:", error.message || error);

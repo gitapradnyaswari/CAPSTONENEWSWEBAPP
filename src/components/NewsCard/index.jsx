@@ -7,7 +7,7 @@ const truncateChar = (text, maxLength = 150) => {
 };
 
 function NewsCard(props) {
-  const { headline, abstract, web_url, byline, onSave, onUnsave, isSaved } = props;
+  const { headline, abstract, web_url, byline, multimedia, onSave, onUnsave, isSaved } = props;
 
   const handleNewsPageClick = () => {
     try {
@@ -28,8 +28,26 @@ function NewsCard(props) {
     }
   };
 
+  // Select image from multimedia or fallback to a placeholder
+  const imageUrl =
+    multimedia && multimedia.length > 0
+      ? `https://www.nytimes.com/${multimedia.find((media) => media.subtype === "xlarge")?.url || multimedia[0].url}`
+      : "https://via.placeholder.com/300x200.png?text=No+Image";
+
   return (
-    <Card className="h-100 d-flex flex-column">
+    <Card className="h-100 d-flex flex-column shadow-sm border-0 rounded">
+      <Card.Img
+        variant="top"
+        src={imageUrl}
+        alt={headline}
+        style={{
+          height: "200px",
+          objectFit: "cover",
+          transition: "transform 0.3s ease",
+          borderRadius: "10px",
+        }}
+        className="card-img-top"
+      />
       <Card.Body className="d-flex flex-column">
         <Card.Subtitle className="mb-2 text-muted">
           <a
@@ -42,20 +60,25 @@ function NewsCard(props) {
           </a>
         </Card.Subtitle>
 
-        <Card.Title>{headline}</Card.Title>
+        <Card.Title className="fw-bold text-dark">{headline}</Card.Title>
 
-        <Card.Text className="flex-grow-1">{truncateChar(abstract)}</Card.Text>
+        <Card.Text className="flex-grow-1 text-muted">{truncateChar(abstract)}</Card.Text>
 
         <Card.Text className="text-muted">By {byline?.original || "Unknown"}</Card.Text>
 
         <div className="mt-auto d-flex justify-content-between">
-          <Button variant="primary" size="sm" className="w-50 me-2" onClick={handleNewsPageClick}>
-            News Page
-          </Button>
+          {/* Teks Read More yang dapat diklik */}
+          <span
+            className="text-primary"
+            style={{ cursor: "pointer", textDecoration: "underline" }}
+            onClick={handleNewsPageClick}
+          >
+            Read More
+          </span>
           <Button
-            variant={isSaved ? "danger" : "success"}
+            variant={isSaved ? "danger" : "success"}  // Change to 'success' for green
             size="sm"
-            className="w-50"
+            className="w-auto"  // Change to 'w-auto' for auto width
             onClick={() => {
               if (isSaved) {
                 onUnsave && onUnsave();
@@ -63,11 +86,31 @@ function NewsCard(props) {
                 onSave && onSave();
               }
             }}
+            style={{
+              transition: "background-color 0.3s, transform 0.3s",
+              borderRadius: "5px",
+            }}
           >
             {isSaved ? "Unsave" : "Save"}
           </Button>
         </div>
       </Card.Body>
+
+      {/* Hover effect for Card */}
+      <style jsx>{`
+        .card:hover {
+          transform: translateY(-10px);
+          box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+        }
+
+        .card-img-top:hover {
+          transform: scale(1.05);
+        }
+
+        .btn:hover {
+          transform: scale(1.05);
+        }
+      `}</style>
     </Card>
   );
 }

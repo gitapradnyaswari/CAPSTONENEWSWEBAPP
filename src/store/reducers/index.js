@@ -4,12 +4,15 @@ export const NEWS_REDUCER_CASES = {
   DONE_FETCHING_NEWS: "DONE_FETCHING_NEWS",
   SAVE_NEWS: "SAVE_NEWS",
   REMOVE_NEWS: "REMOVE_NEWS",
+  RESET_NEWS: "RESET_NEWS",
 };
 
 const newsState = {
   news: [],
   savedNews: [],
   loading: false,
+  totalPages: 0,  // Menyimpan total halaman untuk pagination
+  totalHits: 0,   // Menyimpan total berita yang ada
 };
 
 const newsReducer = (state = newsState, action) => {
@@ -20,6 +23,8 @@ const newsReducer = (state = newsState, action) => {
         ...state,
         news: action.news,
         loading: false,
+        totalHits: action.totalHits,  // Menyimpan total berita yang didapat dari API
+        totalPages: Math.ceil(action.totalHits / 10),  // Menghitung total halaman berdasarkan total berita
       };
     }
     case NEWS_REDUCER_CASES.FETCHING_NEWS: {
@@ -53,6 +58,13 @@ const newsReducer = (state = newsState, action) => {
       return {
         ...state,
         savedNews: updatedSavedNews,
+      };
+    }
+    case NEWS_REDUCER_CASES.RESET_NEWS: {
+      return {
+        ...state,
+        news: [],
+        totalHits: 0,
       };
     }
     default:
